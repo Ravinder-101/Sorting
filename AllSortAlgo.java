@@ -108,15 +108,103 @@ public class Main {
 
     }
     
+    public static void quickSort(int arr[] , int lo  , int hi){
+        if(lo<=hi){
+        int pivot = arr[hi];
+        int pivotidx = partition(arr,pivot, lo, hi);
+        quickSort(arr, lo , pivotidx-1);
+        quickSort(arr, pivotidx+1 , hi);
+        }
+        
+    }
+    public static int  partition(int arr[] , int pivot, int lo , int hi){
+        int i =lo ,  j=lo;
+        while(i <= hi){
+            if(arr[i]<=pivot){
+                swap(arr, i , j);
+                i++;
+                j++;
+            }
+            else{
+                i++;
+            }
+            
+            
+        }
+        return j-1;
+    }
+    public static void countSort( int arr[] , int max){
+        
+       int farr[] = new int[max+1];
+       for(int i=0;i<arr.length;i++){
+           farr[arr[i]]++;
+       }
+       int j = 0;
+       for( int i = 0 ; i< farr.length ; i++ ){
+           int temp = farr[i];
+           while(temp!=0){
+               arr[j] = i;
+               j++;
+               temp--;
+           }
+       }
+
+    }
+ 
+    public static void radixSort(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        for (int val: arr) {
+            if (val > max) {
+                max = val;
+            }
+        }
+        for (int exp = 1, itr = 1; max / exp > 0; exp = exp * 10) {
+            CountSort(arr, exp, itr++);
+        }
+
+    }
+
+    public static void CountSort(int arr[], int exp, int itr) {
+      
+        int farr[] = new int[10];
+        for (int val: arr) {
+            farr[(val/exp)%10]++;
+        }
+ 
+        for (int idx = 1; idx < 10; idx++) {
+            farr[idx] = farr[idx-1] + farr[idx];
+        }
+
+     
+        int ans[] = new int[arr.length];
+        for (int i = arr.length - 1; i >= 0; i--) {
+            int val = arr[i];
+            int pos = farr[(val/exp)%10]--;
+            ans[pos - 1] = val;
+        }
+
+  
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = ans[i];
+        }
+        
+    
+    }
+    
+   
 
 
     public static void main(String[] args) {
-        // Selection sort
+        
         Scanner scn = new Scanner(System.in);
         int n = scn.nextInt();
         int arr[] = new int[n];
+        int max =Integer.MIN_VALUE;
         for (int i = 0; i < n; i++) {
             arr[i] = scn.nextInt();
+            if(arr[i] > max){
+                max = arr[i];
+            }
         }
         // selectionSort(arr);
 
@@ -127,6 +215,11 @@ public class Main {
         // print(k);
 
         // print(arr);
+        // quickSort(arr, 0, arr.length-1);
+        // print(arr);
+       /* countSort(arr , max);*/
+       radixSort(arr);
+        print(arr);
         
 
 
